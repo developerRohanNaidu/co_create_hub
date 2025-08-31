@@ -170,7 +170,7 @@ export default function Home() {
                 Support sustainable farming, empower farmers, and share in the harvest.
               </p>
               <Link
-                href="https://krishisetu-demo-link.com"
+                href="https://krishi-setu-landing.vercel.app/"
                 className="mt-5 inline-block px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition"
               >
                 Explore Krishi Setu
@@ -194,7 +194,7 @@ export default function Home() {
                 and real-time event updates for Maha Kumbh & beyond.
               </p>
               <Link
-                href="https://punyapath-demo-link.com"
+                href="https://punye-path-landing.vercel.app/"
                 className="mt-5 inline-block px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition"
               >
                 Explore Punya Path
