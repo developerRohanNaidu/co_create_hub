@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
+import Image from "next/image";
+
 
 export default function Home() {
   // Banner / Notice carousel
@@ -53,7 +55,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-black/70"></div>
 
         {/* Background Audio */}
-        <audio ref={audioRef} src="/sounds/intro.mp3" autoPlay loop muted />
+        <audio ref={audioRef} src="/sounds/intro.mp3" autoPlay loop />
 
         {/* Mute/Unmute Button */}
         <button
@@ -63,31 +65,49 @@ export default function Home() {
           {isMuted ? <VolumeX size={22} /> : <Volume2 size={22} />}
         </button>
 
+        {/* Landing Options on Video */}
         <div className="relative z-10 px-6">
           <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight">
             CoCreate Hub
           </h1>
           <p className="mt-6 text-lg max-w-3xl text-gray-200 leading-relaxed">
-            A platform where <span className="text-white font-semibold">your ideas</span> 
-            are shaped into reality.  
-            <br />
-            We connect <span className="text-white font-semibold">developers, startups, 
-            consultants, and dreamers</span> to build what matters.
+            Where <span className="text-white font-semibold">students</span> 
+            and <span className="text-white font-semibold">innovators</span> 
+            co-create the future 🚀
           </p>
 
-          <div className="mt-8 flex space-x-4 justify-center">
-            <Link
-              href="/ideas"
+          <div className="mt-10 grid gap-4 md:grid-cols-2 max-w-lg mx-auto">
+            {/* Explore Home */}
+            <a
+              href="#about"
               className="px-6 py-3 bg-white text-black rounded-lg font-bold shadow-md hover:scale-105 transform transition duration-200"
             >
-              Share Your Idea
-            </Link>
+              Explore Home
+            </a>
+
+            {/* Login/Register for Students */}
             <Link
-              href="/projects"
+              href="/auth"
               className="px-6 py-3 border-2 border-white rounded-lg font-bold hover:bg-white hover:text-black hover:scale-105 transform transition duration-200"
             >
-              Explore Projects
+              Student Login / Register
             </Link>
+
+            {/* Explore Pro Version */}
+            <Link
+              href="/pro"
+              className="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-bold shadow-md hover:scale-105 transform transition duration-200"
+            >
+              Explore Pro Version
+            </Link>
+
+            {/* See Top Projects */}
+            <a
+              href="#projects"
+              className="px-6 py-3 border-2 border-gray-300 text-white rounded-lg font-bold hover:bg-gray-200 hover:text-black hover:scale-105 transform transition duration-200"
+            >
+              See Top Projects
+            </a>
           </div>
         </div>
       </section>
@@ -95,7 +115,6 @@ export default function Home() {
       {/* Announcement Banner */}
       <section className="relative bg-gradient-to-r from-purple-900 via-black to-purple-900 py-12">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6">
-          {/* Left Arrow */}
           <button
             onClick={() =>
               setCurrent((prev) => (prev - 1 + banners.length) % banners.length)
@@ -105,7 +124,6 @@ export default function Home() {
             <ChevronLeft size={36} />
           </button>
 
-          {/* Banner Text */}
           <Link
             href={banners[current].link}
             className="flex-1 text-center text-2xl md:text-3xl font-bold text-white px-6"
@@ -113,7 +131,6 @@ export default function Home() {
             {banners[current].text}
           </Link>
 
-          {/* Right Arrow */}
           <button
             onClick={() => setCurrent((prev) => (prev + 1) % banners.length)}
             className="text-gray-400 hover:text-white"
@@ -151,12 +168,12 @@ export default function Home() {
 
       {/* Projects Showcase */}
       <section id="projects" className="px-6 py-20 bg-black text-center">
-        <h2 className="text-4xl font-bold mb-12">Our Projects</h2>
+        <h2 className="text-4xl font-bold mb-12">Top Projects from Students</h2>
 
         <div className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
-          {/* Krishi Setu */}
+          {/* Example Project 1 */}
           <div className="relative rounded-2xl overflow-hidden shadow-lg group h-[420px]">
-            <img
+            <Image
               src="/krishi_setu.png"
               alt="Krishi Setu"
               className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition duration-500"
@@ -166,21 +183,20 @@ export default function Home() {
             <div className="relative z-10 p-8 flex flex-col justify-end h-full text-left">
               <h3 className="text-3xl font-bold">Krishi Setu</h3>
               <p className="mt-3 text-gray-300">
-                Connecting farmers and investors.  
-                Support sustainable farming, empower farmers, and share in the harvest.
+                Connecting farmers and investors. Support sustainable farming & empower communities.
               </p>
               <Link
                 href="https://krishi-setu-landing.vercel.app/"
                 className="mt-5 inline-block px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition"
               >
-                Explore Krishi Setu
+                Explore
               </Link>
             </div>
           </div>
 
-          {/* Punya Path */}
+          {/* Example Project 2 */}
           <div className="relative rounded-2xl overflow-hidden shadow-lg group h-[420px]">
-            <img
+            <Image
               src="/punya_path.png"
               alt="Punya Path"
               className="absolute inset-0 w-full h-full object-cover transform group-hover:scale-105 transition duration-500"
@@ -190,14 +206,13 @@ export default function Home() {
             <div className="relative z-10 p-8 flex flex-col justify-end h-full text-left">
               <h3 className="text-3xl font-bold">Punya Path</h3>
               <p className="mt-3 text-gray-300">
-                Tourism app for devotees — Seamless darshan, AI trip planning, SOS safety, 
-                and real-time event updates for Maha Kumbh & beyond.
+                Tourism app for devotees — Seamless darshan, AI trip planning, and real-time updates.
               </p>
               <Link
                 href="https://punye-path-landing.vercel.app/"
                 className="mt-5 inline-block px-6 py-2 bg-white text-black font-semibold rounded-lg hover:bg-gray-200 transition"
               >
-                Explore Punya Path
+                Explore
               </Link>
             </div>
           </div>
@@ -206,14 +221,17 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="bg-gray-950 text-center py-8 text-gray-400">
-        <p>© {new Date().getFullYear()} CoCreate Hub. All rights reserved.</p>
+        <p>© {new Date().getFullYear()} CoCreateHubIndia, All rights reserved.</p>
         <div className="mt-3 flex justify-center space-x-6">
-          <Link href="https://instagram.com" className="hover:text-white">
+          <Link
+            href="https://www.instagram.com/cocreatehubindia"
+            className="hover:text-white"
+          >
             Instagram
           </Link>
-          <Link href="https://linkedin.com" className="hover:text-white">
-            LinkedIn
-          </Link>
+          <a href="mailto:cocreatehubindia@gmail.com" className="hover:text-white">
+            cocreatehubindia@gmail.com
+          </a>
         </div>
       </footer>
     </main>

@@ -1,4 +1,22 @@
 {
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/auth/page": "app/auth/page.js",
+  "/blog/add/page": "app/blog/add/page.js",
+  "/blog/edit/[id]/page": "app/blog/edit/[id]/page.js",
+  "/blog/view/[id]/page": "app/blog/view/[id]/page.js",
+  "/category/[id]/page": "app/category/[id]/page.js",
+  "/contact/page": "app/contact/page.js",
+  "/expertForm/page": "app/expertForm/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js"
+  "/home/page": "app/home/page.js",
+  "/ideas/page": "app/ideas/page.js",
+  "/notifications/page": "app/notifications/page.js",
+  "/page": "app/page.js",
+  "/pro/page": "app/pro/page.js",
+  "/profile/page": "app/profile/page.js",
+  "/project/add/page": "app/project/add/page.js",
+  "/project/edit/[id]/page": "app/project/edit/[id]/page.js",
+  "/project/view/[id]/page": "app/project/view/[id]/page.js",
+  "/settings/page": "app/settings/page.js"
 }

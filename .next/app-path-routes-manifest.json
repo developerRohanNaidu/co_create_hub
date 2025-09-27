@@ -1,0 +1,22 @@
+{
+  "/_not-found/page": "/_not-found",
+  "/about/page": "/about",
+  "/auth/page": "/auth",
+  "/blog/add/page": "/blog/add",
+  "/blog/edit/[id]/page": "/blog/edit/[id]",
+  "/blog/view/[id]/page": "/blog/view/[id]",
+  "/category/[id]/page": "/category/[id]",
+  "/contact/page": "/contact",
+  "/expertForm/page": "/expertForm",
+  "/favicon.ico/route": "/favicon.ico",
+  "/home/page": "/home",
+  "/ideas/page": "/ideas",
+  "/notifications/page": "/notifications",
+  "/page": "/",
+  "/pro/page": "/pro",
+  "/profile/page": "/profile",
+  "/project/add/page": "/project/add",
+  "/project/edit/[id]/page": "/project/edit/[id]",
+  "/project/view/[id]/page": "/project/view/[id]",
+  "/settings/page": "/settings"
+}
