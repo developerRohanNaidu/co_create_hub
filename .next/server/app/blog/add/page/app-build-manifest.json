@@ -2,15 +2,15 @@
   "pages": {
     "/blog/add/page": [
       "static/chunks/ff1a16fafef87110.js",
-      "static/chunks/7dd66bdf8a7e5707.js",
-      "static/chunks/bbfa584f6611b456.css",
+      "static/chunks/89460367c0865bec.js",
+      "static/chunks/9be715e02324c98f.css",
       "static/chunks/9e192e2f3592377c.js",
-      "static/chunks/90670618e64e3a2e.js",
+      "static/chunks/0119f23ddb289397.js",
       "static/chunks/91adb7bdb9870c6a.js",
       "static/chunks/8082ab48faca5ea1.js",
       "static/chunks/c19da6693934fea1.js",
       "static/chunks/2008ffcf9e5b170c.js",
-      "static/chunks/turbopack-a07ffb59df7c85d9.js"
+      "static/chunks/turbopack-c2eedd1e4f919399.js"
     ]
   }
 }

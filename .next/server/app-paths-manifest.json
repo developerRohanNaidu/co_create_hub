@@ -6,8 +6,10 @@
   "/blog/edit/[id]/page": "app/blog/edit/[id]/page.js",
   "/blog/view/[id]/page": "app/blog/view/[id]/page.js",
   "/category/[id]/page": "app/category/[id]/page.js",
+  "/chat-with-expert/page": "app/chat-with-expert/page.js",
   "/contact/page": "app/contact/page.js",
   "/expertForm/page": "app/expertForm/page.js",
+  "/expertRegister/page": "app/expertRegister/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/home/page": "app/home/page.js",
   "/ideas/page": "app/ideas/page.js",
@@ -18,5 +20,6 @@
   "/project/add/page": "app/project/add/page.js",
   "/project/edit/[id]/page": "app/project/edit/[id]/page.js",
   "/project/view/[id]/page": "app/project/view/[id]/page.js",
-  "/settings/page": "app/settings/page.js"
+  "/settings/page": "app/settings/page.js",
+  "/userProfile/[id]/page": "app/userProfile/[id]/page.js"
 }

@@ -29,9 +29,9 @@ export default function ExpertForm() {
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        const res = await apiRequest("/project/get/getCategories", "GET");
-        const data = await res.json();
+        const data = await apiRequest("/project/get/getCategories", "GET");
         if (data.success) setCategories(data.data);
+        console.log("duiwfewf", data.data);
       } catch (err) {
         console.error("Error fetching categories:", err);
       } finally {
@@ -40,6 +40,7 @@ export default function ExpertForm() {
     };
     fetchCategories();
   }, []);
+  
 
   const handleNext = () => setStep(step + 1);
   const handleBack = () => setStep(step - 1);

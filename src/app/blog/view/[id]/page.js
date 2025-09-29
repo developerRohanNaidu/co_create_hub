@@ -23,15 +23,18 @@ export default function BlogDetailPage() {
   };
 
   const handleLike = async () => {
-    if (isLiking) return;
+    if (isLiking || !blog) return;
     setIsLiking(true);
     try {
       const res = await apiRequest(`/home/blogs/${id}/like`, "POST");
       if (res.success) {
-        // Update like count locally
+        // Toggle like/unlike
         setBlog((prev) => ({
           ...prev,
-          likeCount: (prev.likeCount || 0) + 1,
+          liked: !prev.liked,
+          likeCount: prev.liked
+            ? Math.max((prev.likeCount || 1) - 1, 0)
+            : (prev.likeCount || 0) + 1,
         }));
       }
     } finally {
@@ -68,7 +71,10 @@ export default function BlogDetailPage() {
         {blog.images?.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {blog.images.map((img, i) => (
-              <div key={i} className="relative w-full h-56 rounded-lg overflow-hidden">
+              <div
+                key={i}
+                className="relative w-full h-56 rounded-lg overflow-hidden"
+              >
                 <Image
                   src={img.url}
                   alt={`Blog image ${i + 1}`}

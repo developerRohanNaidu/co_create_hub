@@ -5,13 +5,18 @@ import Layout from "@/components/Layout";
 import Image from "next/image";
 import { Flame, Megaphone, Grid, BookOpen, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { messaging, getToken, onMessage } from "@/lib/firebaseConfig";
 
 export default function HomePage() {
   const router = useRouter();
   const [data, setData] = useState(null);
+  const [notifications, setNotifications] = useState([]); // <-- Added state
 
   useEffect(() => {
     fetchData();
+    if (typeof window !== "undefined" && "serviceWorker" in navigator) {
+      initFirebaseMessaging();
+    }
   }, []);
 
   const fetchData = async () => {
@@ -19,22 +24,82 @@ export default function HomePage() {
     if (res.success) setData(res.data);
   };
 
+  // --- Initialize Firebase Messaging ---
+  const initFirebaseMessaging = async () => {
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission !== "granted") {
+        console.log("Notification permission denied.");
+        return;
+      }
+      console.log("Notification permission granted.");
+
+      // Register service worker
+      const registration = await navigator.serviceWorker.register(
+        "/firebase-messaging-sw.js"
+      );
+
+      // Get FCM token
+      const fcmToken = await getToken(messaging, {
+        vapidKey:
+          "BMnZ6Uhu7PhYqGsRWSfHeX9qgtnQ11SNKn1jbpwlg8XtYSC5mRzezSS6wSEidaIH8zAQAelxM9VquyO_XQkudwg",
+        serviceWorkerRegistration: registration,
+      });
+
+      if (fcmToken) {
+        console.log("FCM Token:", fcmToken);
+        await apiRequest("/user/updateFcmToken", "POST", { fcmToken });
+      } else {
+        console.log("No registration token available.");
+      }
+
+      // Listen for foreground messages
+      onMessage(messaging, (payload) => {
+        if (payload.notification) {
+          const { title, body } = payload.notification;
+          showNotification({ title, body });
+        }
+      });
+    } catch (err) {
+      console.error("Firebase messaging error:", err);
+    }
+  };
+
+  // --- Show notification in-page ---
+  const showNotification = (notification) => {
+    const id = Date.now();
+    setNotifications((prev) => [...prev, { ...notification, id }]);
+    setTimeout(() => {
+      setNotifications((prev) => prev.filter((n) => n.id !== id));
+    }, 5000);
+  };
+
   const handleProjectClick = (id) => router.push(`/project/view/${id}`);
   const handleBlogClick = (id) => router.push(`/blog/view/${id}`);
 
-  const getImageUrl = (imageObj, fallbackHeight = 200) => {
-    if (imageObj?.url) {
-      return imageObj.url.startsWith("http")
+  const getImageUrl = (imageObj) =>
+    imageObj?.url
+      ? imageObj.url.startsWith("http")
         ? imageObj.url
-        : `http://localhost:5000${imageObj.url}`;
-    }
-    return null;
-  };
+        : `http://localhost:5000${imageObj.url}`
+      : null;
 
   return (
     <Layout>
-      <div className="space-y-12 px-4 md:px-8">
+      {/* --- Notification Container --- */}
+      <div className="fixed top-4 right-4 z-50 space-y-2">
+        {notifications.map((n) => (
+          <div
+            key={n.id}
+            className="min-w-[250px] bg-white dark:bg-gray-800 border-l-4 border-blue-500 shadow-lg rounded-lg p-4 animate-slide-in"
+          >
+            <h4 className="font-bold text-gray-900 dark:text-white">{n.title}</h4>
+            <p className="text-sm text-gray-700 dark:text-gray-300">{n.body}</p>
+          </div>
+        ))}
+      </div>
 
+      <div className="space-y-12 px-4 md:px-8">
         {/* 🔥 Trending Projects */}
         <section>
           <div className="flex items-center gap-2 mb-6">
@@ -45,7 +110,7 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {data?.projects?.map((p) => {
-              const imageUrl = getImageUrl(p.images?.[0], 160);
+              const imageUrl = getImageUrl(p.images?.[0]);
               return (
                 <div
                   key={p.id}
@@ -133,7 +198,7 @@ export default function HomePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {data?.blogs?.map((b) => {
-              const imageUrl = getImageUrl(b.images?.[0], 200);
+              const imageUrl = getImageUrl(b.images?.[0]);
               return (
                 <div
                   key={b.id}
@@ -191,6 +256,23 @@ export default function HomePage() {
           </div>
         </section>
       </div>
+
+      {/* --- Tailwind slide-in animation --- */}
+      <style jsx>{`
+        @keyframes slide-in {
+          0% {
+            opacity: 0;
+            transform: translateX(100%);
+          }
+          100% {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        .animate-slide-in {
+          animation: slide-in 0.5s ease-out;
+        }
+      `}</style>
     </Layout>
   );
 }

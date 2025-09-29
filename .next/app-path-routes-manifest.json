@@ -6,8 +6,10 @@
   "/blog/edit/[id]/page": "/blog/edit/[id]",
   "/blog/view/[id]/page": "/blog/view/[id]",
   "/category/[id]/page": "/category/[id]",
+  "/chat-with-expert/page": "/chat-with-expert",
   "/contact/page": "/contact",
   "/expertForm/page": "/expertForm",
+  "/expertRegister/page": "/expertRegister",
   "/favicon.ico/route": "/favicon.ico",
   "/home/page": "/home",
   "/ideas/page": "/ideas",
@@ -18,5 +20,6 @@
   "/project/add/page": "/project/add",
   "/project/edit/[id]/page": "/project/edit/[id]",
   "/project/view/[id]/page": "/project/view/[id]",
-  "/settings/page": "/settings"
+  "/settings/page": "/settings",
+  "/userProfile/[id]/page": "/userProfile/[id]"
 }

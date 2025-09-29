@@ -106,17 +106,34 @@ export default function ProjectDetailPage() {
         </div>
 
         {/* Project Owner */}
-        {project.owner && (
-          <div className="flex items-center gap-4 p-4 bg-gray-900 rounded-lg">
-            {project.owner.profile_image && (
-              <Image src={project.owner.profile_image} alt={project.owner.name} width={50} height={50} className="rounded-full" />
-            )}
-            <div>
-              <p className="font-semibold">{project.owner.name}</p>
-              <p className="text-gray-400">Project Owner</p>
-            </div>
-          </div>
-        )}
+{project.owner && (
+  <div
+    onClick={() => router.push(`/userProfile/${project.owner.id}`)}
+    className="flex items-center gap-4 p-4 bg-gray-900 rounded-lg cursor-pointer hover:bg-gray-800 transition"
+  >
+    {/* Avatar */}
+    {project.owner.profile_image ? (
+      <Image
+        src={project.owner.profile_image}
+        alt={project.owner.name}
+        width={50}
+        height={50}
+        className="rounded-full border-2 border-gray-700"
+      />
+    ) : (
+      <div className="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center text-gray-400">
+        {project.owner.name?.[0] || "U"}
+      </div>
+    )}
+
+    {/* Info */}
+    <div>
+      <p className="font-semibold">{project.owner.name}</p>
+      <p className="text-gray-400">Project Owner</p>
+    </div>
+  </div>
+)}
+
 
         {/* Collaborators */}
         {project.collaborators?.length > 0 && (

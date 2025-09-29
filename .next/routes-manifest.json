@@ -58,6 +58,14 @@
         "nxtPid": "nxtPid"
       },
       "namedRegex": "^/project/view/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/userProfile/[id]",
+      "regex": "^/userProfile/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/userProfile/(?<nxtPid>[^/]+?)(?:/)?$"
     }
   ],
   "staticRoutes": [
@@ -92,6 +100,12 @@
       "namedRegex": "^/blog/add(?:/)?$"
     },
     {
+      "page": "/chat-with-expert",
+      "regex": "^/chat\\-with\\-expert(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/chat\\-with\\-expert(?:/)?$"
+    },
+    {
       "page": "/contact",
       "regex": "^/contact(?:/)?$",
       "routeKeys": {},
@@ -102,6 +116,12 @@
       "regex": "^/expertForm(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/expertForm(?:/)?$"
+    },
+    {
+      "page": "/expertRegister",
+      "regex": "^/expertRegister(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/expertRegister(?:/)?$"
     },
     {
       "page": "/favicon.ico",
