@@ -88,6 +88,18 @@
       "namedRegex": "^/about(?:/)?$"
     },
     {
+      "page": "/admin",
+      "regex": "^/admin(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin(?:/)?$"
+    },
+    {
+      "page": "/admin-dashboard",
+      "regex": "^/admin\\-dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/admin\\-dashboard(?:/)?$"
+    },
+    {
       "page": "/auth",
       "regex": "^/auth(?:/)?$",
       "routeKeys": {},
@@ -98,6 +110,12 @@
       "regex": "^/blog/add(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/blog/add(?:/)?$"
+    },
+    {
+      "page": "/chat-history",
+      "regex": "^/chat\\-history(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/chat\\-history(?:/)?$"
     },
     {
       "page": "/chat-with-expert",

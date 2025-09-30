@@ -16,10 +16,12 @@ export default function AuthPage() {
     email: "",
     password: "",
     confirmPassword: "",
+    referral: "",
   });
 
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showResend, setShowResend] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -28,8 +30,9 @@ export default function AuthPage() {
     e.preventDefault();
     setLoading(true);
     setMessage("");
+    setShowResend(false);
 
-    // Register validation
+    // Validate passwords
     if (!isLogin && form.password !== form.confirmPassword) {
       setMessage("Passwords do not match!");
       setLoading(false);
@@ -44,23 +47,28 @@ export default function AuthPage() {
           email: form.email,
           phone: form.phone,
           password: form.password,
+          referral: form.referral,
         };
 
     const res = await apiRequest(`/user${endpoint}`, "POST", body);
 
     if (res.success) {
-      setMessage("Success!");
       if (isLogin) {
-        // ✅ Store token & user on login
-        localStorage.setItem("token", res.token);
-        localStorage.setItem("user", JSON.stringify(res.user));
-        router.push("/home");
+        if (res.user?.isVerified) {
+          // ✅ Login success
+          setMessage("Login successful!");
+          localStorage.setItem("token", res.token);
+          localStorage.setItem("user", JSON.stringify(res.user));
+          router.push("/home");
+        } else {
+          // ❌ Not verified
+          setMessage("Your email is not verified. Please verify before logging in.");
+          setShowResend(true);
+        }
       } else {
-        // ✅ Redirect to login after register
-        setTimeout(() => {
-          setIsLogin(true);
-          setMessage("Registration successful! Please login.");
-        }, 1000);
+        // ✅ Registration success
+        setMessage("Registration successful! A verification link has been sent to your email.");
+        setIsLogin(true);
       }
     } else {
       setMessage(res.message || "Failed, try again!");
@@ -94,6 +102,20 @@ export default function AuthPage() {
     setLoading(false);
   };
 
+  const handleResendVerification = async () => {
+    setLoading(true);
+    setMessage("");
+    const res = await apiRequest("/user/resend-verification", "POST", {
+      email: form.email,
+    });
+    if (res.success) {
+      setMessage("Verification link resent to your email.");
+    } else {
+      setMessage(res.message || "Failed to resend verification link.");
+    }
+    setLoading(false);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white px-4">
       <motion.div
@@ -108,11 +130,7 @@ export default function AuthPage() {
         </div>
 
         <h1 className="text-3xl font-bold text-center mb-6">
-          {showForgot
-            ? "Forgot Password"
-            : isLogin
-            ? "Login"
-            : "Register"}
+          {showForgot ? "Forgot Password" : isLogin ? "Login" : "Register"}
         </h1>
 
         {/* Forms */}
@@ -142,14 +160,24 @@ export default function AuthPage() {
             />
 
             {!isLogin && (
-              <input
-                type="text"
-                name="phone"
-                placeholder="Phone"
-                value={form.phone}
-                onChange={handleChange}
-                className="w-full p-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500"
-              />
+              <>
+                <input
+                  type="text"
+                  name="phone"
+                  placeholder="Phone"
+                  value={form.phone}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500"
+                />
+                <input
+                  type="text"
+                  name="referral"
+                  placeholder="Referral Code (optional)"
+                  value={form.referral}
+                  onChange={handleChange}
+                  className="w-full p-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500"
+                />
+              </>
             )}
 
             <input
@@ -177,11 +205,7 @@ export default function AuthPage() {
               disabled={loading}
               className="w-full py-3 bg-white text-black font-bold rounded-lg hover:bg-gray-200 transition duration-300"
             >
-              {loading
-                ? "Please wait..."
-                : isLogin
-                ? "Login"
-                : "Register"}
+              {loading ? "Please wait..." : isLogin ? "Login" : "Register"}
             </button>
           </form>
         ) : (
@@ -228,6 +252,17 @@ export default function AuthPage() {
         {/* Response Message */}
         {message && (
           <p className="mt-4 text-center text-sm text-gray-300">{message}</p>
+        )}
+
+        {/* Resend Verification Button */}
+        {showResend && (
+          <button
+            onClick={handleResendVerification}
+            disabled={loading}
+            className="mt-4 w-full py-2 bg-yellow-500 text-black font-semibold rounded-lg hover:bg-yellow-400 transition"
+          >
+            {loading ? "Resending..." : "Resend Verification Link"}
+          </button>
         )}
 
         {/* Switch */}

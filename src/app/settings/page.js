@@ -24,7 +24,7 @@ export default function SettingsPage() {
     // Call your logout API or remove token
     await apiRequest("/auth/logout", "POST");
     // Redirect to login page
-    window.location.href = "/login";
+    window.location.href = "/auth";
   };
 
   return (
