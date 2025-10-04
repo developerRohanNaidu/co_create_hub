@@ -100,6 +100,12 @@
       "namedRegex": "^/admin\\-dashboard(?:/)?$"
     },
     {
+      "page": "/announcements",
+      "regex": "^/announcements(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/announcements(?:/)?$"
+    },
+    {
       "page": "/auth",
       "regex": "^/auth(?:/)?$",
       "routeKeys": {},
@@ -128,6 +134,12 @@
       "regex": "^/contact(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/contact(?:/)?$"
+    },
+    {
+      "page": "/expert-dashboard",
+      "regex": "^/expert\\-dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/expert\\-dashboard(?:/)?$"
     },
     {
       "page": "/expertForm",

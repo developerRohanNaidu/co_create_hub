@@ -5,6 +5,8 @@ import { apiRequest } from "@/lib/api";
 import Layout from "@/components/Layout";
 import Image from "next/image";
 import { Heart, MessageCircle, Users } from "lucide-react";
+import ReportModal from "@/components/ReportModal";
+
 
 export default function ProjectDetailPage() {
   const router = useRouter();
@@ -13,10 +15,22 @@ export default function ProjectDetailPage() {
   const [newComment, setNewComment] = useState("");
   const [commentsPage, setCommentsPage] = useState(1);
   const [totalCommentPages, setTotalCommentPages] = useState(1);
+  const [showReportModal, setShowReportModal] = useState(false); 
 
   useEffect(() => {
-    if (id) fetchProject();
-  }, [id]);
+    if (!id) return;
+
+    const fetchProject = async () => {
+      const res = await apiRequest(`/project/${id}`, "GET");
+      if (res.success) {
+        setProject(res.project);
+        setTotalCommentPages(res.project.commentsPages || 1);
+      }
+    };
+
+    fetchProject();
+  }, [id]); 
+  
 
   const fetchProject = async () => {
     const res = await apiRequest(`/project/${id}`, "GET");
@@ -72,6 +86,8 @@ export default function ProjectDetailPage() {
       <div className="max-w-5xl mx-auto p-6 space-y-6">
         {/* Title */}
         <h1 className="text-3xl font-bold">{project.title}</h1>
+
+
 
         {/* Images */}
         {project.images?.length > 0 && (
@@ -165,6 +181,15 @@ export default function ProjectDetailPage() {
           </button>
         </div>
 
+
+         {/* Report Button */}
+ <button
+          onClick={() => setShowReportModal(true)}
+          className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+        >
+          Report Project
+        </button>
+
         {/* Comment Section */}
         <section className="mt-6">
           <h2 className="text-xl font-bold mb-2">Comments</h2>
@@ -205,6 +230,14 @@ export default function ProjectDetailPage() {
             </button>
           )}
         </section>
+
+        {/* Report Modal */}
+        <ReportModal
+          isOpen={showReportModal}
+          onClose={() => setShowReportModal(false)}
+          referenceId={project.id}
+          referenceType="project"
+        />
       </div>
     </Layout>
   );

@@ -51,9 +51,30 @@ export default function ExpertForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Submitting:", formData);
-    setStep(4); 
+    try {
+      // ✅ Call API to create request appointment
+      const body = {
+        userId: 1, // Replace with logged-in user ID
+        techType: formData.category, // or formData.level if needed
+        preferredDate: new Date(), // or a date picker value
+        meetingLinkType: "Zoom", // optional, can add input field
+        notes: formData.query,
+      };
+  
+      const res = await apiRequest("/home/request", "POST", body);
+  
+      if (res.success) {
+        console.log("Request created:", res.data);
+        setStep(4); // move to thank you page
+      } else {
+        alert(res.message || "Failed to create request appointment");
+      }
+    } catch (err) {
+      console.error("Error creating appointment request:", err);
+      alert("Something went wrong. Please try again.");
+    }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-white text-black px-4">

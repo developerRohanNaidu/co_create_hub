@@ -14,24 +14,42 @@ export default function ProjectEditPage() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    if (id) fetchProject();
+    if (!id) return;
+
+    const fetchProject = async () => {
+      const res = await apiRequest(`/project/${id}`, "GET");
+      if (res.success) {
+        const data = res.project;
+        setProject(data);
+        setForm({
+          title: data.title || "",
+          description: data.description || "",
+          goalAmount: data.goalAmount || "",
+          status: data.status || "draft",
+          visibility: data.visibility || "public",
+        });
+        setImages(data.images || []);
+      }
+    };
+
+    fetchProject();
   }, [id]);
 
-  const fetchProject = async () => {
-    const res = await apiRequest(`/project/${id}`, "GET");
-    if (res.success) {
-      const data = res.project;
-      setProject(data);
-      setForm({
-        title: data.title || "",
-        description: data.description || "",
-        goalAmount: data.goalAmount || "",
-        status: data.status || "draft",
-        visibility: data.visibility || "public",
-      });
-      setImages(data.images || []);
-    }
-  };
+  // const fetchProject = async () => {
+  //   const res = await apiRequest(`/project/${id}`, "GET");
+  //   if (res.success) {
+  //     const data = res.project;
+  //     setProject(data);
+  //     setForm({
+  //       title: data.title || "",
+  //       description: data.description || "",
+  //       goalAmount: data.goalAmount || "",
+  //       status: data.status || "draft",
+  //       visibility: data.visibility || "public",
+  //     });
+  //     setImages(data.images || []);
+  //   }
+  // };
 
   const handleChange = (e) =>
     setForm({

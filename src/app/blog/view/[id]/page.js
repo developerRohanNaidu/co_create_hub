@@ -1,34 +1,38 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { apiRequest } from "@/lib/api";
 import Layout from "@/components/Layout";
 import Image from "next/image";
-import { Heart, MessageCircle } from "lucide-react";
+import { Heart, MessageCircle, Flag } from "lucide-react";
+import ReportModal from "@/components/ReportModal"; // ✅ make sure you have this component
 
 export default function BlogDetailPage() {
   const router = useRouter();
-  const params = useParams();
-  const { id } = params;
+  const { id } = useParams();
+
   const [blog, setBlog] = useState(null);
   const [isLiking, setIsLiking] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
+  // ✅ Fetch blog when ID changes
   useEffect(() => {
+    const fetchBlog = async () => {
+      const res = await apiRequest(`/blog/${id}`, "GET");
+      if (res.success) setBlog(res.data);
+    };
+
     if (id) fetchBlog();
   }, [id]);
 
-  const fetchBlog = async () => {
-    const res = await apiRequest(`/blog/${id}`, "GET");
-    if (res.success) setBlog(res.data);
-  };
-
+  // ✅ Like handler
   const handleLike = async () => {
     if (isLiking || !blog) return;
     setIsLiking(true);
     try {
       const res = await apiRequest(`/home/blogs/${id}/like`, "POST");
       if (res.success) {
-        // Toggle like/unlike
         setBlog((prev) => ({
           ...prev,
           liked: !prev.liked,
@@ -108,7 +112,7 @@ export default function BlogDetailPage() {
           </div>
         </div>
 
-        {/* Like & Comment Stats */}
+        {/* Like / Comment / Report */}
         <div className="flex items-center gap-6 mt-2">
           <button
             onClick={handleLike}
@@ -123,11 +127,28 @@ export default function BlogDetailPage() {
             />
             <span>{blog.likeCount || 0}</span>
           </button>
+
           <div className="flex items-center gap-1">
             <MessageCircle className="text-white" size={20} />
             <span>{blog.commentCount || 0}</span>
           </div>
+
+          <button
+            onClick={() => setShowReportModal(true)}
+            className="flex items-center gap-1 hover:text-yellow-500 transition"
+          >
+            <Flag size={20} />
+            <span>Report</span>
+          </button>
         </div>
+
+        {/* ✅ Report Modal */}
+        <ReportModal
+          isOpen={showReportModal}
+          onClose={() => setShowReportModal(false)}
+          referenceId={blog.id}
+          referenceType="blog"
+        />
       </div>
     </Layout>
   );

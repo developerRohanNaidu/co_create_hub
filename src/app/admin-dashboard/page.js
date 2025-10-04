@@ -1,308 +1,201 @@
 "use client";
-import { useState, useEffect } from "react";
-import { apiRequest } from "@/lib/api";
-import Sidebar from "@/components/Sidebar";
-import Image from "next/image";
-import { Pencil, Trash, Plus } from "lucide-react";
+import { useEffect, useState } from "react";
+import { apiRequest } from "@/lib/api"; // your helper for API calls
 
 export default function AdminDashboard() {
-  const [data, setData] = useState({
-    users: [],
-    projects: [],
-    blogs: [],
-    appointments: [],
-    announcements: [],
-  });
-  const [loading, setLoading] = useState(true);
-
-  // Announcement Form State
   const [announcementForm, setAnnouncementForm] = useState({
     title: "",
     shortDescription: "",
     longDescription: "",
     image: "",
-    targetType: "all",
+    targetType: "all", // can be "all", "users", "experts"
     targetId: "",
     expiresAt: "",
   });
 
   const [announcementMessage, setAnnouncementMessage] = useState("");
+  const [announcements, setAnnouncements] = useState([]);
 
+  // ✅ Fetch all announcements
   const fetchAdminData = async () => {
-    setLoading(true);
     try {
-      const [usersRes, projectsRes, blogsRes, appointmentsRes, announcementsRes] = await Promise.all([
-        apiRequest("/admin/users", "GET"),
-        apiRequest("/admin/projects", "GET"),
-        apiRequest("/admin/blogs", "GET"),
-        apiRequest("/admin/appointments", "GET"),
-        apiRequest("/admin/announcements", "GET"),
-      ]);
-
-      setData({
-        users: usersRes.success ? usersRes.data : [],
-        projects: projectsRes.success ? projectsRes.data : [],
-        blogs: blogsRes.success ? blogsRes.data : [],
-        appointments: appointmentsRes.success ? appointmentsRes.data : [],
-        announcements: announcementsRes.success ? announcementsRes.data : [],
-      });
+      const res = await apiRequest("/admin/announcements", "GET");
+      if (res.success) {
+        setAnnouncements(res.data || []);
+      }
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching admin dashboard:", err);
     }
-    setLoading(false);
+  };
+
+  // ✅ Create new announcement
+  const createAnnouncement = async () => {
+    if (!announcementForm.title) {
+      setAnnouncementMessage("⚠️ Title is required.");
+      return;
+    }
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const payload = {
+        ...announcementForm,
+        createdBy: user?.id || 1, // fallback admin ID if not found
+      };
+
+      const res = await apiRequest("/admin/createAnnouncement", "POST", payload);
+
+      if (res.success) {
+        setAnnouncementMessage("✅ Announcement created successfully!");
+        setAnnouncementForm({
+          title: "",
+          shortDescription: "",
+          longDescription: "",
+          image: "",
+          targetType: "all",
+          targetId: "",
+          expiresAt: "",
+        });
+        fetchAdminData(); // refresh list
+      } else {
+        setAnnouncementMessage(res.message || "❌ Failed to create announcement.");
+      }
+    } catch (err) {
+      console.error("Error creating announcement:", err);
+      setAnnouncementMessage("❌ Something went wrong.");
+    }
   };
 
   useEffect(() => {
     fetchAdminData();
   }, []);
 
-  const handleAnnouncementChange = (e) =>
-    setAnnouncementForm({ ...announcementForm, [e.target.name]: e.target.value });
-
-  const createAnnouncement = async () => {
-    if (!announcementForm.title) {
-      setAnnouncementMessage("Title is required");
-      return;
-    }
-
-    const res = await apiRequest("/admin/announcement/create", "POST", announcementForm);
-
-    if (res.success) {
-      setAnnouncementMessage("Announcement created successfully!");
-      setAnnouncementForm({
-        title: "",
-        shortDescription: "",
-        longDescription: "",
-        image: "",
-        targetType: "all",
-        targetId: "",
-        expiresAt: "",
-      });
-      fetchAdminData();
-    } else {
-      setAnnouncementMessage(res.message || "Failed to create announcement");
-    }
-  };
-
-  const toggleAnnouncementStatus = async (id, status) => {
-    const res = await apiRequest(`/admin/announcement/${id}/status`, "PUT", { status });
-    if (res.success) fetchAdminData();
-  };
-
-  if (loading)
-    return (
-      <div className="flex justify-center items-center h-screen text-white bg-black">
-        Loading admin dashboard...
-      </div>
-    );
-
   return (
-    <div className="flex min-h-screen bg-black text-white">
-      <Sidebar active="Dashboard" />
-      <main className="flex-1 p-6 space-y-6">
-        <h1 className="text-3xl font-bold mb-4">Admin Dashboard</h1>
+    <div className="min-h-screen bg-gray-900 text-white p-8">
+      <div className="max-w-5xl mx-auto space-y-10">
+        {/* ===== Header ===== */}
+        <header className="text-center">
+          <h1 className="text-3xl font-bold mb-2">🛠 Admin Dashboard</h1>
+          <p className="text-gray-400">Manage announcements and platform updates</p>
+        </header>
 
-        {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
-          <div className="p-4 bg-gray-900 rounded-lg text-center">
-            <p className="text-xl font-bold">{data.users.length}</p>
-            <p className="text-gray-400">Users</p>
-          </div>
-          <div className="p-4 bg-gray-900 rounded-lg text-center">
-            <p className="text-xl font-bold">{data.projects.length}</p>
-            <p className="text-gray-400">Projects</p>
-          </div>
-          <div className="p-4 bg-gray-900 rounded-lg text-center">
-            <p className="text-xl font-bold">{data.blogs.length}</p>
-            <p className="text-gray-400">Blogs</p>
-          </div>
-          <div className="p-4 bg-gray-900 rounded-lg text-center">
-            <p className="text-xl font-bold">{data.appointments.length}</p>
-            <p className="text-gray-400">Appointments</p>
-          </div>
-          <div className="p-4 bg-gray-900 rounded-lg text-center">
-            <p className="text-xl font-bold">{data.announcements.length}</p>
-            <p className="text-gray-400">Announcements</p>
-          </div>
-        </div>
+        {/* ===== Create Announcement Section ===== */}
+        <section className="bg-gray-800 rounded-xl shadow-lg p-6">
+          <h2 className="text-2xl font-semibold mb-4">📢 Create Announcement</h2>
 
-        {/* Users Table */}
-        <section>
-          <h2 className="text-xl font-bold mb-2">Users</h2>
-          {data.users.length ? (
-            <ul className="bg-gray-900 rounded-lg p-4 space-y-2">
-              {data.users.map((u) => (
-                <li key={u.id} className="flex justify-between border-b border-gray-700 py-2">
-                  <span>{u.name} ({u.email})</span>
-                  <span>Joined: {new Date(u.createdAt).toLocaleDateString()}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-400">No users found.</p>
-          )}
-        </section>
-
-        {/* Projects */}
-        <section>
-          <h2 className="text-xl font-bold mb-2">Projects</h2>
-          <div className="flex overflow-x-auto gap-4 py-2">
-            {data.projects.map((p) => (
-              <div
-                key={p.id}
-                className="relative min-w-[250px] bg-gray-900 p-4 rounded-lg shadow hover:shadow-md cursor-pointer"
-              >
-                {p.images?.[0] && (
-                  <Image
-                    src={p.images[0].url}
-                    alt={p.title}
-                    width={250}
-                    height={150}
-                    className="rounded-lg mb-2"
-                  />
-                )}
-                <h3 className="font-semibold">{p.title}</h3>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Blogs */}
-        <section>
-          <h2 className="text-xl font-bold mb-2">Blogs</h2>
-          <div className="flex overflow-x-auto gap-4 py-2">
-            {data.blogs.map((b) => (
-              <div key={b.id} className="relative min-w-[250px] bg-gray-900 p-4 rounded-lg shadow">
-                {b.images?.[0] && (
-                  <Image
-                    src={b.images[0].url}
-                    alt={b.title}
-                    width={250}
-                    height={150}
-                    className="rounded-lg mb-2"
-                  />
-                )}
-                <h3 className="font-semibold">{b.title}</h3>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Appointments */}
-        <section>
-          <h2 className="text-xl font-bold mb-2">Appointments</h2>
-          {data.appointments.length ? (
-            <ul className="bg-gray-900 rounded-lg p-4 space-y-2">
-              {data.appointments.map((a) => (
-                <li key={a.id} className="flex justify-between border-b border-gray-700 pb-2">
-                  <span>{a.title}</span>
-                  <span>{a.date}</span>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-400">No appointments found.</p>
-          )}
-        </section>
-
-        {/* Announcement Form */}
-        <section>
-          <h2 className="text-xl font-bold mb-2 flex items-center gap-2">
-            <Plus size={18} /> Create Announcement
-          </h2>
-          <div className="bg-gray-900 p-4 rounded-lg space-y-3">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input
               type="text"
-              name="title"
               placeholder="Title"
+              className="p-3 rounded bg-gray-700 border border-gray-600 text-white"
               value={announcementForm.title}
-              onChange={handleAnnouncementChange}
-              className="w-full p-2 bg-black border border-gray-700 rounded"
+              onChange={(e) =>
+                setAnnouncementForm({ ...announcementForm, title: e.target.value })
+              }
             />
-            <input
-              type="text"
-              name="shortDescription"
-              placeholder="Short Description"
-              value={announcementForm.shortDescription}
-              onChange={handleAnnouncementChange}
-              className="w-full p-2 bg-black border border-gray-700 rounded"
-            />
-            <textarea
-              name="longDescription"
-              placeholder="Long Description"
-              value={announcementForm.longDescription}
-              onChange={handleAnnouncementChange}
-              className="w-full p-2 bg-black border border-gray-700 rounded"
-            />
-            <input
-              type="text"
-              name="image"
-              placeholder="Image URL"
-              value={announcementForm.image}
-              onChange={handleAnnouncementChange}
-              className="w-full p-2 bg-black border border-gray-700 rounded"
-            />
-            <input
-              type="date"
-              name="expiresAt"
-              value={announcementForm.expiresAt}
-              onChange={handleAnnouncementChange}
-              className="w-full p-2 bg-black border border-gray-700 rounded"
-            />
-            <button
-              onClick={createAnnouncement}
-              className="px-4 py-2 bg-white text-black rounded hover:bg-gray-200"
-            >
-              Create Announcement
-            </button>
-            {announcementMessage && (
-              <p className="text-gray-300">{announcementMessage}</p>
-            )}
-          </div>
-        </section>
 
-        {/* Existing Announcements */}
-        <section>
-          <h2 className="text-xl font-bold mb-2">Manage Announcements</h2>
-          {data.announcements.length ? (
-            <ul className="bg-gray-900 rounded-lg p-4 space-y-2">
-              {data.announcements.map((a) => (
-                <li key={a.id} className="flex justify-between items-center border-b border-gray-700 py-2">
-                  <span>{a.title} ({a.status})</span>
-                  <div className="flex gap-2">
-                    {a.status !== "active" && (
-                      <button
-                        onClick={() => toggleAnnouncementStatus(a.id, "active")}
-                        className="px-2 py-1 bg-green-600 rounded text-sm"
-                      >
-                        Activate
-                      </button>
-                    )}
-                    {a.status !== "archived" && (
-                      <button
-                        onClick={() => toggleAnnouncementStatus(a.id, "archived")}
-                        className="px-2 py-1 bg-yellow-600 rounded text-sm"
-                      >
-                        Archive
-                      </button>
-                    )}
-                    {a.status !== "deleted" && (
-                      <button
-                        onClick={() => toggleAnnouncementStatus(a.id, "deleted")}
-                        className="px-2 py-1 bg-red-600 rounded text-sm"
-                      >
-                        Delete
-                      </button>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-400">No announcements found.</p>
+            <input
+              type="text"
+              placeholder="Short Description"
+              className="p-3 rounded bg-gray-700 border border-gray-600 text-white"
+              value={announcementForm.shortDescription}
+              onChange={(e) =>
+                setAnnouncementForm({ ...announcementForm, shortDescription: e.target.value })
+              }
+            />
+
+            <input
+              type="text"
+              placeholder="Image URL"
+              className="p-3 rounded bg-gray-700 border border-gray-600 text-white"
+              value={announcementForm.image}
+              onChange={(e) =>
+                setAnnouncementForm({ ...announcementForm, image: e.target.value })
+              }
+            />
+
+            <select
+              className="p-3 rounded bg-gray-700 border border-gray-600 text-white"
+              value={announcementForm.targetType}
+              onChange={(e) =>
+                setAnnouncementForm({ ...announcementForm, targetType: e.target.value })
+              }
+            >
+              <option value="all">All Users</option>
+              <option value="user">Regular Users</option>
+              <option value="project">Projects</option>
+              <option value="group">Groups</option>
+            </select>
+
+            <input
+              type="datetime-local"
+              placeholder="Expires At"
+              className="p-3 rounded bg-gray-700 border border-gray-600 text-white"
+              value={announcementForm.expiresAt}
+              onChange={(e) =>
+                setAnnouncementForm({ ...announcementForm, expiresAt: e.target.value })
+              }
+            />
+          </div>
+
+          <textarea
+            placeholder="Long Description"
+            rows={5}
+            className="w-full mt-4 p-3 rounded bg-gray-700 border border-gray-600 text-white"
+            value={announcementForm.longDescription}
+            onChange={(e) =>
+              setAnnouncementForm({ ...announcementForm, longDescription: e.target.value })
+            }
+          />
+
+          <button
+            onClick={createAnnouncement}
+            className="mt-5 px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-semibold"
+          >
+            ➕ Create Announcement
+          </button>
+
+          {announcementMessage && (
+            <p className="mt-3 text-sm text-gray-300">{announcementMessage}</p>
           )}
         </section>
-      </main>
+
+        {/* ===== List of Announcements ===== */}
+        <section className="bg-gray-800 rounded-xl shadow-lg p-6">
+          <h2 className="text-2xl font-semibold mb-4">📜 All Announcements</h2>
+
+          {announcements.length === 0 ? (
+            <p className="text-gray-400">No announcements yet.</p>
+          ) : (
+            <div className="space-y-4">
+              {announcements.map((a) => (
+                <div
+                  key={a.id}
+                  className="p-4 rounded-lg border border-gray-700 hover:bg-gray-750 transition"
+                >
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-xl font-semibold">{a.title}</h3>
+                    <span className="text-sm text-gray-400">
+                      {new Date(a.createdAt).toLocaleString()}
+                    </span>
+                  </div>
+
+                  <p className="text-gray-300 mt-1">{a.shortDescription}</p>
+                  {a.image && (
+                    <img
+                      src={a.image}
+                      alt={a.title}
+                      className="mt-2 w-full h-48 object-cover rounded-lg"
+                    />
+                  )}
+                  <p className="text-gray-400 mt-2 text-sm">
+                    {a.longDescription?.slice(0, 200)}...
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      </div>
     </div>
   );
 }

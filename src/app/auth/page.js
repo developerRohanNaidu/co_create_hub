@@ -59,7 +59,12 @@ export default function AuthPage() {
           setMessage("Login successful!");
           localStorage.setItem("token", res.token);
           localStorage.setItem("user", JSON.stringify(res.user));
-          router.push("/home");
+          // router.push("/home");
+          if (res.user.userType === "expert") {
+            router.push("/expert-dashboard"); // expert dashboard route
+          } else {
+            router.push("/home"); // student/home route
+          }
         } else {
           // ❌ Not verified
           setMessage("Your email is not verified. Please verify before logging in.");
@@ -150,14 +155,23 @@ export default function AuthPage() {
               )}
             </AnimatePresence>
 
-            <input
+            {!isLogin && (<input
               type="email"
               name="email"
               placeholder="Email"
               value={form.email}
               onChange={handleChange}
               className="w-full p-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500"
-            />
+            />)}
+
+        {isLogin && (<input
+              type="text"
+              name="email"
+              placeholder="Email/Phone"
+              value={form.email}
+              onChange={handleChange}
+              className="w-full p-3 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-500"
+            />)}
 
             {!isLogin && (
               <>

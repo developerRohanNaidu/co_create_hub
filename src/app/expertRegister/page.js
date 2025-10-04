@@ -9,6 +9,7 @@ export default function ExpertRegister() {
     name: "",
     email: "",
     password: "",
+    phone: "", // ✅ added phone
     bio: "",
     skills: "",
   });
@@ -24,10 +25,9 @@ export default function ExpertRegister() {
     setLoading(true);
 
     try {
-      // Call backend API to register expert
-      const res = await apiRequest("/auth/register", "POST", {
+      const res = await apiRequest("/user/register", "POST", {
         ...formData,
-        userType: "expert", // force expert registration
+        userType: "expert",
       });
 
       if (res.success) {
@@ -52,9 +52,7 @@ export default function ExpertRegister() {
           {[1, 2].map((s) => (
             <div
               key={s}
-              className={`w-8 h-2 rounded ${
-                step >= s ? "bg-white" : "bg-gray-600"
-              }`}
+              className={`w-8 h-2 rounded ${step >= s ? "bg-white" : "bg-gray-600"}`}
             />
           ))}
         </div>
@@ -64,14 +62,11 @@ export default function ExpertRegister() {
           <div className="space-y-6 text-center">
             <h2 className="text-2xl font-bold">Register as Expert</h2>
             <p className="text-gray-300">
-              {"Choose whether to continue with your current account or create a new expert account."}
+              Choose whether to continue with your current account or create a new expert account.
             </p>
             <div className="flex flex-col gap-3 mt-6">
               <button
-                onClick={() => {
-                  // Here you can handle "upgrade current account to expert"
-                  alert("Upgrading current account to Expert coming soon!");
-                }}
+                onClick={() => alert("Upgrading current account to Expert coming soon!")}
                 className="bg-white text-black px-6 py-2 rounded font-semibold hover:bg-gray-200 transition"
               >
                 Use Current Account
@@ -121,6 +116,17 @@ export default function ExpertRegister() {
               required
             />
 
+            {/* ✅ New Phone Number Field */}
+            <input
+              type="tel"
+              name="phone"
+              value={formData.phone}
+              onChange={handleChange}
+              placeholder="Phone Number"
+              className="w-full p-3 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:border-white"
+              required
+            />
+
             <textarea
               name="bio"
               value={formData.bio}
@@ -148,8 +154,8 @@ export default function ExpertRegister() {
             </button>
 
             <p className="text-center text-gray-400 text-sm">
-              {"Already have an account? "}
-              <a href="/login" className="text-white underline">
+              Already have an account?{" "}
+              <a href="/auth" className="text-white underline">
                 Login
               </a>
             </p>

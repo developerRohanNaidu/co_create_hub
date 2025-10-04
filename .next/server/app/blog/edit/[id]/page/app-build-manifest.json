@@ -2,17 +2,17 @@
   "pages": {
     "/blog/edit/[id]/page": [
       "static/chunks/ff1a16fafef87110.js",
-      "static/chunks/89460367c0865bec.js",
-      "static/chunks/f05d066c352ce19e.css",
-      "static/chunks/041214ac02aa6a23.js",
+      "static/chunks/7dd66bdf8a7e5707.js",
+      "static/chunks/2017d2f11e1c759d.css",
+      "static/chunks/c5241ed4affcb1a6.js",
       "static/chunks/b67a90c5f2b9acc4.js",
       "static/chunks/4bff8f5869904de3.js",
-      "static/chunks/0119f23ddb289397.js",
+      "static/chunks/6dd58c53b42f3f9b.js",
       "static/chunks/91adb7bdb9870c6a.js",
       "static/chunks/8082ab48faca5ea1.js",
       "static/chunks/c19da6693934fea1.js",
       "static/chunks/2008ffcf9e5b170c.js",
-      "static/chunks/turbopack-c2eedd1e4f919399.js"
+      "static/chunks/turbopack-7c6a78ed827e2daf.js"
     ]
   }
 }
