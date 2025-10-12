@@ -11,6 +11,8 @@
   "/category/[id]/page": "/category/[id]",
   "/chat-history/page": "/chat-history",
   "/chat-with-expert/page": "/chat-with-expert",
+  "/chat/[conversationId]/page": "/chat/[conversationId]",
+  "/chat/page": "/chat",
   "/contact/page": "/contact",
   "/expert-dashboard/page": "/expert-dashboard",
   "/expertForm/page": "/expertForm",

@@ -44,6 +44,14 @@
       "namedRegex": "^/category/(?<nxtPid>[^/]+?)(?:/)?$"
     },
     {
+      "page": "/chat/[conversationId]",
+      "regex": "^/chat/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPconversationId": "nxtPconversationId"
+      },
+      "namedRegex": "^/chat/(?<nxtPconversationId>[^/]+?)(?:/)?$"
+    },
+    {
       "page": "/project/edit/[id]",
       "regex": "^/project/edit/([^/]+?)(?:/)?$",
       "routeKeys": {
@@ -116,6 +124,12 @@
       "regex": "^/blog/add(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/blog/add(?:/)?$"
+    },
+    {
+      "page": "/chat",
+      "regex": "^/chat(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/chat(?:/)?$"
     },
     {
       "page": "/chat-history",

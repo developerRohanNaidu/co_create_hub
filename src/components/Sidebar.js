@@ -11,6 +11,7 @@ const navItems = [
   { name: "Notifications", path: "/notifications" },
   { name: "Profile", path: "/profile" },
   { name: "Settings", path: "/settings" },
+  { name: "My Bookmarked", path: "/bookmarks" },
   { name: "Enrole as expert", path: "/expertRegister" },
   { name: "About Us", path: "/about" },
 ];

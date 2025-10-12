@@ -16,12 +16,23 @@ export default function NotificationsPage() {
     if (res.success) setNotifications(res.data);
   };
 
-  const handleJoinRequest = async (id, action) => {
-    // Example API call for join_request accept/cancel
-    const res = await apiRequest(`/notifications/join-request/${id}`, "POST", { action });
+  const handleJoinRequest = async (notification) => {
+    const { projectId, senderId } = notification; // from your notification object
+  
+    const res = await apiRequest(
+      "/home/collaboration/respond",
+      "POST",
+      {
+        action: notification.actionType, // e.g., "accept" or "cancel"
+        projectId,
+        senderId,
+      }
+    );
+  
     setMessage(res.message);
     if (res.success) fetchNotifications();
   };
+  
 
   const typeColors = {
     like: "bg-green-600",
@@ -57,21 +68,32 @@ export default function NotificationsPage() {
                 </div>
 
                 {n.type === "join_request" && (
-                  <div className="flex gap-2 mt-2 md:mt-0">
-                    <button
-                      onClick={() => handleJoinRequest(n.id, "accept")}
-                      className="px-3 py-1 bg-green-500 text-black rounded hover:bg-green-400"
-                    >
-                      Accept
-                    </button>
-                    <button
-                      onClick={() => handleJoinRequest(n.id, "cancel")}
-                      className="px-3 py-1 bg-red-500 text-black rounded hover:bg-red-400"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                )}
+  <div className="flex gap-2 mt-2 md:mt-0">
+    <button
+      onClick={() =>
+        handleJoinRequest({
+          ...n,
+          actionType: "accept",
+        })
+      }
+      className="px-3 py-1 bg-green-500 text-black rounded hover:bg-green-400"
+    >
+      Accept
+    </button>
+    <button
+      onClick={() =>
+        handleJoinRequest({
+          ...n,
+          actionType: "cancel",
+        })
+      }
+      className="px-3 py-1 bg-red-500 text-black rounded hover:bg-red-400"
+    >
+      Cancel
+    </button>
+  </div>
+)}
+
               </li>
             ))}
           </ul>

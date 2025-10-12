@@ -11,6 +11,8 @@
   "/category/[id]/page": "app/category/[id]/page.js",
   "/chat-history/page": "app/chat-history/page.js",
   "/chat-with-expert/page": "app/chat-with-expert/page.js",
+  "/chat/[conversationId]/page": "app/chat/[conversationId]/page.js",
+  "/chat/page": "app/chat/page.js",
   "/contact/page": "app/contact/page.js",
   "/expert-dashboard/page": "app/expert-dashboard/page.js",
   "/expertForm/page": "app/expertForm/page.js",
