@@ -8,6 +8,7 @@
   "/blog/add/page": "app/blog/add/page.js",
   "/blog/edit/[id]/page": "app/blog/edit/[id]/page.js",
   "/blog/view/[id]/page": "app/blog/view/[id]/page.js",
+  "/bookmarks/page": "app/bookmarks/page.js",
   "/category/[id]/page": "app/category/[id]/page.js",
   "/chat-history/page": "app/chat-history/page.js",
   "/chat-with-expert/page": "app/chat-with-expert/page.js",

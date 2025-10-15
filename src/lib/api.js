@@ -1,5 +1,5 @@
 // utils/apiRequest.js
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "http://16.171.24.213:5000/api";
 
 export async function apiRequest(endpoint, method = "GET", body = null, isFormData = false) {
   try {

@@ -8,6 +8,7 @@
   "/blog/add/page": "/blog/add",
   "/blog/edit/[id]/page": "/blog/edit/[id]",
   "/blog/view/[id]/page": "/blog/view/[id]",
+  "/bookmarks/page": "/bookmarks",
   "/category/[id]/page": "/category/[id]",
   "/chat-history/page": "/chat-history",
   "/chat-with-expert/page": "/chat-with-expert",
