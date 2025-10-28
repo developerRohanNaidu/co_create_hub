@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import Sidebar from "@/components/Sidebar";
+// import Sidebar from "@/components/Sidebar";
 
 export default function AboutPage() {
   return (
     <div className="flex min-h-screen bg-black text-white">
-      <Sidebar active="About" />
+      {/* <Sidebar active="About" /> */}
       <main className="flex-1 p-6 space-y-6">
         <section className="max-w-4xl mx-auto space-y-6">
           <h1 className="text-3xl font-bold text-center">About Our Platform</h1>

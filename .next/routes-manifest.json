@@ -18,64 +18,7 @@
     "afterFiles": [],
     "fallback": []
   },
-  "dynamicRoutes": [
-    {
-      "page": "/blog/edit/[id]",
-      "regex": "^/blog/edit/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPid": "nxtPid"
-      },
-      "namedRegex": "^/blog/edit/(?<nxtPid>[^/]+?)(?:/)?$"
-    },
-    {
-      "page": "/blog/view/[id]",
-      "regex": "^/blog/view/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPid": "nxtPid"
-      },
-      "namedRegex": "^/blog/view/(?<nxtPid>[^/]+?)(?:/)?$"
-    },
-    {
-      "page": "/category/[id]",
-      "regex": "^/category/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPid": "nxtPid"
-      },
-      "namedRegex": "^/category/(?<nxtPid>[^/]+?)(?:/)?$"
-    },
-    {
-      "page": "/chat/[conversationId]",
-      "regex": "^/chat/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPconversationId": "nxtPconversationId"
-      },
-      "namedRegex": "^/chat/(?<nxtPconversationId>[^/]+?)(?:/)?$"
-    },
-    {
-      "page": "/project/edit/[id]",
-      "regex": "^/project/edit/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPid": "nxtPid"
-      },
-      "namedRegex": "^/project/edit/(?<nxtPid>[^/]+?)(?:/)?$"
-    },
-    {
-      "page": "/project/view/[id]",
-      "regex": "^/project/view/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPid": "nxtPid"
-      },
-      "namedRegex": "^/project/view/(?<nxtPid>[^/]+?)(?:/)?$"
-    },
-    {
-      "page": "/userProfile/[id]",
-      "regex": "^/userProfile/([^/]+?)(?:/)?$",
-      "routeKeys": {
-        "nxtPid": "nxtPid"
-      },
-      "namedRegex": "^/userProfile/(?<nxtPid>[^/]+?)(?:/)?$"
-    }
-  ],
+  "dynamicRoutes": [],
   "staticRoutes": [
     {
       "page": "/",
@@ -120,24 +63,6 @@
       "namedRegex": "^/auth(?:/)?$"
     },
     {
-      "page": "/blog/add",
-      "regex": "^/blog/add(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/blog/add(?:/)?$"
-    },
-    {
-      "page": "/bookmarks",
-      "regex": "^/bookmarks(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/bookmarks(?:/)?$"
-    },
-    {
-      "page": "/chat",
-      "regex": "^/chat(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/chat(?:/)?$"
-    },
-    {
       "page": "/chat-history",
       "regex": "^/chat\\-history(?:/)?$",
       "routeKeys": {},
@@ -150,10 +75,10 @@
       "namedRegex": "^/chat\\-with\\-expert(?:/)?$"
     },
     {
-      "page": "/contact",
-      "regex": "^/contact(?:/)?$",
+      "page": "/coming-soon",
+      "regex": "^/coming\\-soon(?:/)?$",
       "routeKeys": {},
-      "namedRegex": "^/contact(?:/)?$"
+      "namedRegex": "^/coming\\-soon(?:/)?$"
     },
     {
       "page": "/expert-dashboard",
@@ -172,12 +97,6 @@
       "regex": "^/expertRegister(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/expertRegister(?:/)?$"
-    },
-    {
-      "page": "/favicon.ico",
-      "regex": "^/favicon\\.ico(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/favicon\\.ico(?:/)?$"
     },
     {
       "page": "/home",
@@ -208,12 +127,6 @@
       "regex": "^/profile(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/profile(?:/)?$"
-    },
-    {
-      "page": "/project/add",
-      "regex": "^/project/add(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/project/add(?:/)?$"
     },
     {
       "page": "/settings",

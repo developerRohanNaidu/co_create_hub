@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Volume2, VolumeX } from "lucide-react";
 import Image from "next/image";
 
-
 export default function Home() {
   // Banner / Notice carousel
   const banners = [
@@ -39,9 +38,15 @@ export default function Home() {
     }
   };
 
+  // Smooth scroll helper
+  const scrollToSection = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <main className="min-h-screen bg-black text-white font-sans">
-      {/* Hero Section with Video + Audio */}
+      {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center text-center h-screen overflow-hidden">
         <video
           autoPlay
@@ -54,10 +59,8 @@ export default function Home() {
         </video>
         <div className="absolute inset-0 bg-black/70"></div>
 
-        {/* Background Audio */}
+        {/* Audio */}
         <audio ref={audioRef} src="/sounds/intro.mp3" autoPlay loop />
-
-        {/* Mute/Unmute Button */}
         <button
           onClick={toggleAudio}
           className="absolute top-6 right-6 bg-white/20 hover:bg-white/40 p-2 rounded-full"
@@ -65,35 +68,31 @@ export default function Home() {
           {isMuted ? <VolumeX size={22} /> : <Volume2 size={22} />}
         </button>
 
-        {/* Landing Options on Video */}
+        {/* Hero Content */}
         <div className="relative z-10 px-6">
-          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight">
+          <h1 className="text-6xl md:text-7xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400">
             CoCreate Hub
           </h1>
           <p className="mt-6 text-lg max-w-3xl text-gray-200 leading-relaxed">
-            Where <span className="text-white font-semibold">students</span> 
-            and <span className="text-white font-semibold">innovators</span> 
-            co-create the future 🚀
+            Where <span className="font-semibold text-white">students</span> and{" "}
+            <span className="font-semibold text-white">innovators</span> co-create the future 🚀
           </p>
 
           <div className="mt-10 grid gap-4 md:grid-cols-2 max-w-lg mx-auto">
-            {/* Explore Home */}
-            <a
-              href="#about"
+            <button
+              onClick={() => scrollToSection("about")}
               className="px-6 py-3 bg-white text-black rounded-lg font-bold shadow-md hover:scale-105 transform transition duration-200"
             >
-              Explore Home
-            </a>
+              About Us
+            </button>
 
-            {/* Login/Register for Students */}
             <Link
-              href="/auth"
+              href="/coming-soon"
               className="px-6 py-3 border-2 border-white rounded-lg font-bold hover:bg-white hover:text-black hover:scale-105 transform transition duration-200"
             >
               Student Login / Register
             </Link>
 
-            {/* Explore Pro Version */}
             <Link
               href="/pro"
               className="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 text-white rounded-lg font-bold shadow-md hover:scale-105 transform transition duration-200"
@@ -101,13 +100,12 @@ export default function Home() {
               Explore Pro Version
             </Link>
 
-            {/* See Top Projects */}
-            <a
-              href="#projects"
+            <button
+              onClick={() => scrollToSection("projects")}
               className="px-6 py-3 border-2 border-gray-300 text-white rounded-lg font-bold hover:bg-gray-200 hover:text-black hover:scale-105 transform transition duration-200"
             >
               See Top Projects
-            </a>
+            </button>
           </div>
         </div>
       </section>
@@ -140,38 +138,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Why CoCreate Section */}
-      <section id="about" className="px-6 py-20 text-center bg-gray-100 text-black">
-        <h2 className="text-4xl font-bold mb-10">Why CoCreate Hub?</h2>
-
-        <div className="grid md:grid-cols-3 gap-10 max-w-6xl mx-auto">
-          <div className="p-8 bg-white rounded-xl shadow hover:shadow-lg transition">
-            <h3 className="text-2xl font-semibold mb-3">🚀 Faster Execution</h3>
-            <p className="text-gray-600">
-              Turn raw ideas into products with mentors, developers & startup experts.
-            </p>
-          </div>
-          <div className="p-8 bg-white rounded-xl shadow hover:shadow-lg transition">
-            <h3 className="text-2xl font-semibold mb-3">🤝 Meaningful Connections</h3>
-            <p className="text-gray-600">
-              Network with investors, entrepreneurs, and innovators who share your vision.
-            </p>
-          </div>
-          <div className="p-8 bg-white rounded-xl shadow hover:shadow-lg transition">
-            <h3 className="text-2xl font-semibold mb-3">💡 Real Impact</h3>
-            <p className="text-gray-600">
-              Ideas alone aren’t enough. We give you the space & support to make them real.
-            </p>
-          </div>
+      {/* About Us Section */}
+      <section
+        id="about"
+        className="px-6 py-24 text-center bg-gradient-to-b from-gray-100 via-white to-gray-100 text-black"
+      >
+        <h2 className="text-4xl font-bold mb-10 text-gray-800">About CoCreate Hub</h2>
+        <div className="max-w-4xl mx-auto text-lg leading-relaxed text-gray-700">
+          <p>
+            CoCreate Hub India is a platform that bridges the gap between{" "}
+            <span className="font-semibold text-black">students, innovators, and mentors</span>.
+            It empowers individuals to collaborate, build real-world projects, and connect with
+            people who share the same passion for technology and innovation.
+          </p>
+          <p className="mt-6">
+            Whether you’re a student looking to showcase your skills or a professional seeking
+            collaboration, CoCreate Hub provides you the tools and community to grow together.
+          </p>
+          <Link
+            href="/about"
+            className="inline-block mt-8 px-8 py-3 bg-black text-white font-semibold rounded-lg shadow hover:bg-gray-800 transition duration-200"
+          >
+            Learn More →
+          </Link>
         </div>
       </section>
 
-      {/* Projects Showcase */}
+      {/* Projects Section */}
       <section id="projects" className="px-6 py-20 bg-black text-center">
         <h2 className="text-4xl font-bold mb-12">Top Projects from Students</h2>
 
         <div className="grid md:grid-cols-2 gap-10 max-w-6xl mx-auto">
-          {/* Example Project 1 */}
+          {/* Project 1 */}
           <div className="relative rounded-2xl overflow-hidden shadow-lg group h-[420px]">
             <Image
               src="/krishi_setu.png"
@@ -194,7 +192,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Example Project 2 */}
+          {/* Project 2 */}
           <div className="relative rounded-2xl overflow-hidden shadow-lg group h-[420px]">
             <Image
               src="/punya_path.png"
@@ -223,10 +221,7 @@ export default function Home() {
       <footer className="bg-gray-950 text-center py-8 text-gray-400">
         <p>© {new Date().getFullYear()} CoCreateHubIndia, All rights reserved.</p>
         <div className="mt-3 flex justify-center space-x-6">
-          <Link
-            href="https://www.instagram.com/cocreatehubindia"
-            className="hover:text-white"
-          >
+          <Link href="https://www.instagram.com/cocreatehubindia" className="hover:text-white">
             Instagram
           </Link>
           <a href="mailto:cocreatehubindia@gmail.com" className="hover:text-white">

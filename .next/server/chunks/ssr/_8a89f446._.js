@@ -1,0 +1,3 @@
+module.exports=[95414,a=>{"use strict";async function b(a,c="GET",d=null,e=!1){try{let b=localStorage.getItem("token"),f={};e||(f["Content-Type"]="application/json"),b&&(f.Authorization=`Bearer ${b}`);let g=await fetch(`http://16.171.24.213:5000/api${a}`,{method:c,headers:f,body:e?d:d?JSON.stringify(d):null,cache:"no-store"});return await g.json()}catch(a){return console.error("API Request Error:",a),{success:!1,message:"Network error"}}}a.s(["apiRequest",()=>b])},50944,(a,b,c)=>{b.exports=a.r(74137)}];
+
+//# sourceMappingURL=_8a89f446._.js.map
